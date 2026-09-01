@@ -89,3 +89,11 @@ Configure environment variables and install relevant dependencies.If you need to
 ## Learn More
 
 You can also check the help documentation: Download and Building the app（ [https://intl.cloud.baidu.com/en/doc/MIAODA/s/download-and-building-the-app-en](https://intl.cloud.baidu.com/en/doc/MIAODA/s/download-and-building-the-app-en)）to learn more detailed content.
+
+
+## 👨‍💻 Designed By
+**Abhishek Ugare**
+
+- Email: abhishekugare1289@gmail.com
+- LinkedIn: https://www.linkedin.com/in/abhishek-ugare-a289s85k
+- Portfolio: https://abhi8hero.github.io/portfolio-abhishek_ugare/
