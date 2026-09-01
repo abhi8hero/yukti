@@ -26,6 +26,7 @@ const App: React.FC = () => {
           <Route path="/" element={<AdcpApp darkMode={darkMode} onToggleDark={toggleDark} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        <footer className="border-t py-4 text-center bg-background"> <p> ©{' '} <strong> <a href="https://abhi8hero.github.io/portfolio-abhishek_ugare/" target="_blank" rel="noopener noreferrer" className="hover:underline" > Abhi The Great </a> </strong> </p> </footer>
       </div>
       <Toaster richColors position="top-right" />
     </Router>
