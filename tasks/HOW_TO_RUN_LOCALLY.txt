@@ -1,0 +1,270 @@
+========================================================
+  ADCP — Automation for Data Cleaning Process
+  How to Run Locally
+========================================================
+
+PREREQUISITES
+-------------
+  - Node.js v18 or higher  (https://nodejs.org)
+  - pnpm v8 or higher       (https://pnpm.io)
+      Install pnpm:  npm install -g pnpm
+
+  For Supabase backend (free, no install needed):
+  - A free Supabase account at https://supabase.com
+
+
+========================================================
+  OPTION A — QUICK START (Frontend Only, Zero Setup)
+========================================================
+
+The app works fully in the browser using in-memory data.
+No backend or account required. Data is NOT saved between
+page refreshes, but upload / clean / export all work fine.
+
+  1. Extract the zip file:
+       unzip adcp-project.zip
+       cd app-c7pro4jhk16p
+
+  2. Install dependencies:
+       pnpm install
+
+  3. Start the development server:
+       pnpm dev
+
+  4. Open your browser at:
+       http://localhost:5173
+
+That's it. You can upload any CSV/XLSX/JSON/TXT file and
+use the full cleaning workflow immediately.
+
+
+========================================================
+  OPTION B — WITH SUPABASE BACKEND (Persistent Storage)
+========================================================
+
+The backend is Supabase — a hosted PostgreSQL service.
+It stores dataset metadata, cleaning logs, and error records
+so your work is saved between sessions.
+
+Supabase runs in the CLOUD (no local server to install).
+Setup takes about 5 minutes.
+
+------------------------------------------------------
+STEP 1 — Create a free Supabase account
+------------------------------------------------------
+  1. Go to: https://supabase.com
+  2. Click "Start your project" and sign up (free tier is enough)
+  3. Click "New project"
+  4. Fill in:
+       - Project name: adcp  (or any name you like)
+       - Database password: choose a strong password (save it!)
+       - Region: pick the closest to you
+  5. Click "Create new project" and wait ~1 minute for it to boot
+
+------------------------------------------------------
+STEP 2 — Run the database migration
+------------------------------------------------------
+This creates the 4 tables ADCP needs in your database.
+
+  1. In your Supabase dashboard, click "SQL Editor" in the
+     left sidebar (looks like a terminal icon)
+
+  2. Click "New query"
+
+  3. Open the migration file from the project:
+       adcp-project/supabase/migrations/00001_initial_schema.sql
+
+  4. Copy the ENTIRE contents of that file and paste it
+     into the Supabase SQL Editor
+
+  5. Click the green "Run" button (or press Ctrl+Enter)
+
+  6. You should see: "Success. No rows returned"
+
+  This creates the following tables:
+    - datasets        → stores file name, row/column counts, schema
+    - dataset_rows    → stores actual row data (JSON)
+    - dataset_errors  → stores detected data quality issues
+    - cleaning_logs   → stores all cleaning operations performed
+
+------------------------------------------------------
+STEP 3 — Copy your project credentials
+------------------------------------------------------
+  1. In the Supabase dashboard, click the gear icon ⚙
+     "Project Settings" in the left sidebar
+
+  2. Click "API" under Configuration
+
+  3. You will see two values — copy both:
+
+       Project URL:
+         https://xxxxxxxxxxxxxxxxxxxx.supabase.co
+
+       anon / public key:
+         eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+------------------------------------------------------
+STEP 4 — Configure the .env file
+------------------------------------------------------
+  1. Open the file:  adcp-project/.env
+
+  2. Replace the existing values with YOUR credentials:
+
+       VITE_SUPABASE_URL=https://xxxxxxxxxxxxxxxxxxxx.supabase.co
+       VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+  Save the file.
+
+  NOTE: The .env included in the zip already contains a
+  working hosted Supabase project. You can use it as-is
+  without doing Steps 1–4 — but you will share that database
+  with others. Use your own project for private data.
+
+------------------------------------------------------
+STEP 5 — Run the app
+------------------------------------------------------
+  pnpm install   (only needed once)
+  pnpm dev
+
+  Open: http://localhost:5173
+
+  When you upload a dataset now, ADCP will save it to your
+  Supabase PostgreSQL database automatically.
+
+
+========================================================
+  WHAT THE BACKEND STORES
+========================================================
+
+  Table: datasets
+    → Dataset name, file format, row count, column count,
+      detected column schema, processing status, timestamps
+
+  Table: dataset_rows
+    → The actual row data stored as JSON per row, linked
+      to the parent dataset by ID
+
+  Table: dataset_errors
+    → Each detected data quality issue: row number, column
+      name, error type, description, suggested fix, fixed flag
+
+  Table: cleaning_logs
+    → Every cleaning operation performed: operation type,
+      mode (basic/smart/manual), description, affected rows,
+      affected columns, timestamp
+
+  You can browse all this data live in the Supabase dashboard
+  under "Table Editor" at any time.
+
+
+========================================================
+  VERIFY YOUR DATABASE IS CONNECTED
+========================================================
+
+  After running the app with your own .env credentials:
+
+  1. Upload any CSV file in ADCP
+  2. Go to your Supabase dashboard → Table Editor → datasets
+  3. You should see a new row appear with your file name
+
+  If no row appears:
+    - Double-check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
+      in .env (no extra spaces or quotes)
+    - Make sure you saved the .env file
+    - Restart the dev server:  Ctrl+C  then  pnpm dev
+    - Check browser console (F12) for any error messages
+
+
+========================================================
+  BUILD FOR PRODUCTION
+========================================================
+  pnpm build
+
+  Output goes to the /dist folder.
+  Preview it locally:
+
+    pnpm preview
+    # or
+    npx serve dist
+
+  To deploy: upload the /dist folder to any static host
+  (Vercel, Netlify, Cloudflare Pages, GitHub Pages, etc.)
+  Make sure to set the environment variables on your host:
+    VITE_SUPABASE_URL
+    VITE_SUPABASE_ANON_KEY
+
+
+========================================================
+  PROJECT STRUCTURE
+========================================================
+  src/
+    components/
+      upload/           — Drag-and-drop upload page
+      workspace/        — Spreadsheet grid, sidebars, panels
+    contexts/
+      WorkspaceContext  — Global app state (rows, errors, logs)
+    lib/
+      fileParser.ts     — Parses CSV / XLSX / JSON / TXT files
+      errorDetector.ts  — Detects data quality issues
+      cleaningEngine.ts — Basic & Smart cleaning engine
+      exportEngine.ts   — Exports CSV / XLSX / JSON
+    pages/
+      AdcpApp.tsx       — Root application entry point
+    types/              — TypeScript type definitions
+    db/
+      supabase.ts       — Supabase client (reads from .env)
+
+  supabase/
+    migrations/
+      00001_initial_schema.sql  — Database schema (run this!)
+
+
+========================================================
+  SUPPORTED FILE FORMATS
+========================================================
+  Upload:   CSV, XLSX, XLS, JSON, TXT
+  Export:   CSV, XLSX, JSON
+
+
+========================================================
+  KEY FEATURES
+========================================================
+  - Drag-and-drop file upload with auto schema detection
+  - Power BI-style error detection panel (missing values,
+    invalid types, duplicates, wrong dates, encoding issues)
+  - Virtualized Excel-like spreadsheet (handles large files)
+  - Cell editing, row/column add & delete, column rename
+  - Sort & filter columns
+  - Undo / Redo (up to 50 steps)
+  - Basic Cleaning: normalize column names, trim whitespace,
+                    remove empty rows
+  - Smart Cleaning: remove duplicates, standardize dates,
+                    normalize numbers & booleans
+  - Transformation log panel
+  - Export cleaned data as CSV, XLSX, or JSON
+  - Dark / Light mode toggle
+  - AI Agent placeholder panel (future n8n integration)
+
+
+========================================================
+  SCRIPTS
+========================================================
+  pnpm dev        Start development server (hot reload)
+  pnpm build      Build for production
+  pnpm preview    Preview production build locally
+  pnpm lint       Run linter
+
+
+========================================================
+  TECH STACK
+========================================================
+  Frontend:   React 18 + TypeScript + Vite
+  Styling:    Tailwind CSS + shadcn/ui
+  Parsing:    PapaParse (CSV/TXT), SheetJS/xlsx (XLSX)
+  Backend:    Supabase (PostgreSQL, hosted cloud)
+  Icons:      lucide-react
+
+
+========================================================
+  Built with ADCP v1.0 — 2026
+========================================================

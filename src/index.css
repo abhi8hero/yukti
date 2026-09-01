@@ -1,0 +1,255 @@
+/* stylelint-disable */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ADCP Design System — Tool-Rational / Data Dashboard
+   Primary: Slate Blue | Accent: Amber (errors only) | Neutral grays
+*/
+
+@layer base {
+  :root {
+    --radius: 0.25rem;
+
+    /* Core surfaces */
+    --background: 210 20% 97%;
+    --foreground: 215 28% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 28% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 28% 17%;
+
+    /* Primary: Slate Blue #2C5282 */
+    --primary: 213 50% 34%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary */
+    --secondary: 213 30% 90%;
+    --secondary-foreground: 213 50% 25%;
+
+    /* Muted */
+    --muted: 210 20% 93%;
+    --muted-foreground: 213 15% 47%;
+
+    /* Accent: subtle blue tint for hover/selection (low saturation) */
+    --accent: 213 40% 94%;
+    --accent-foreground: 213 50% 30%;
+
+    /* Destructive */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders & inputs */
+    --border: 213 20% 88%;
+    --input: 213 20% 88%;
+    --ring: 213 50% 34%;
+
+    /* Status colors */
+    --success: 142 71% 35%;
+    --success-foreground: 0 0% 100%;
+    --warning: 27 96% 44%;
+    --warning-foreground: 0 0% 100%;
+    --info: 213 86% 48%;
+    --info-foreground: 0 0% 100%;
+
+    /* Error highlight (amber) */
+    --error-highlight: 38 92% 50%;
+    --error-highlight-bg: 38 100% 95%;
+    --error-highlight-border: 38 92% 50%;
+
+    /* Charts */
+    --chart-1: 213 86% 48%;
+    --chart-2: 142 71% 35%;
+    --chart-3: 27 96% 44%;
+    --chart-4: 280 60% 52%;
+    --chart-5: 340 75% 55%;
+
+    /* Sidebar */
+    --sidebar-background: 215 28% 17%;
+    --sidebar-foreground: 210 30% 85%;
+    --sidebar-primary: 213 86% 65%;
+    --sidebar-primary-foreground: 215 28% 10%;
+    --sidebar-accent: 215 28% 24%;
+    --sidebar-accent-foreground: 210 30% 92%;
+    --sidebar-border: 215 28% 22%;
+    --sidebar-ring: 213 86% 65%;
+  }
+
+  .dark {
+    --background: 215 28% 8%;
+    --foreground: 210 30% 92%;
+    --card: 215 28% 11%;
+    --card-foreground: 210 30% 92%;
+    --popover: 215 28% 11%;
+    --popover-foreground: 210 30% 92%;
+
+    /* Primary in dark: lighter blue */
+    --primary: 213 70% 60%;
+    --primary-foreground: 215 28% 8%;
+
+    --secondary: 215 25% 18%;
+    --secondary-foreground: 210 30% 85%;
+
+    --muted: 215 28% 15%;
+    --muted-foreground: 213 15% 58%;
+
+    --accent: 215 28% 18%;
+    --accent-foreground: 213 70% 70%;
+
+    --destructive: 0 62% 42%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 28% 20%;
+    --input: 215 28% 20%;
+    --ring: 213 70% 60%;
+
+    --success: 142 60% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 27 90% 55%;
+    --warning-foreground: 215 28% 8%;
+    --info: 213 80% 60%;
+    --info-foreground: 215 28% 8%;
+
+    --error-highlight: 38 90% 55%;
+    --error-highlight-bg: 38 80% 12%;
+    --error-highlight-border: 38 90% 55%;
+
+    --chart-1: 213 80% 58%;
+    --chart-2: 142 60% 45%;
+    --chart-3: 27 90% 55%;
+    --chart-4: 280 60% 60%;
+    --chart-5: 340 70% 58%;
+
+    --sidebar-background: 215 28% 8%;
+    --sidebar-foreground: 210 30% 80%;
+    --sidebar-primary: 213 70% 62%;
+    --sidebar-primary-foreground: 215 28% 8%;
+    --sidebar-accent: 215 28% 14%;
+    --sidebar-accent-foreground: 210 30% 90%;
+    --sidebar-border: 215 28% 14%;
+    --sidebar-ring: 213 70% 62%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html, body, #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* Monospace for data cells */
+  .font-data {
+    font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+    font-size: 13px;
+  }
+
+  /* Scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* ADCP Spreadsheet Grid styles */
+@layer components {
+  .adcp-cell {
+    @apply border-r border-b border-border px-2 py-1 text-xs font-data text-foreground bg-card;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+    transition: background-color 100ms ease-in-out;
+  }
+
+  .adcp-cell:hover {
+    @apply bg-accent;
+  }
+
+  .adcp-cell.selected {
+    @apply bg-accent outline outline-2 outline-primary;
+    z-index: 2;
+  }
+
+  .adcp-cell.editing {
+    @apply bg-card outline outline-2 outline-primary;
+    z-index: 3;
+    overflow: visible;
+  }
+
+  .adcp-cell.error {
+    background-color: hsl(var(--error-highlight-bg));
+    border-left: 2px solid hsl(var(--error-highlight-border));
+  }
+
+  .adcp-cell.duplicate {
+    background-color: hsl(38 100% 93%);
+  }
+
+  .dark .adcp-cell.duplicate {
+    background-color: hsl(38 80% 11%);
+  }
+
+  .adcp-cell.null-cell {
+    @apply text-muted-foreground italic;
+  }
+
+  .adcp-header-cell {
+    @apply border-r border-b border-border px-2 py-1 text-xs font-medium bg-muted text-foreground sticky top-0 z-10;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .adcp-row-number {
+    @apply border-r border-b border-border px-2 py-1 text-xs bg-muted text-muted-foreground text-right sticky left-0 z-10;
+    min-width: 48px;
+    user-select: none;
+  }
+
+  /* Loading bar */
+  .adcp-loading-bar {
+    height: 2px;
+    background: hsl(var(--primary));
+    animation: adcp-loading 1.5s ease-in-out infinite;
+  }
+
+  @keyframes adcp-loading {
+    0% { transform: translateX(-100%); width: 50%; }
+    50% { transform: translateX(100%); width: 50%; }
+    100% { transform: translateX(200%); width: 50%; }
+  }
+
+  /* Panel transitions */
+  .adcp-panel-enter {
+    animation: fadeSlideIn 150ms ease-out forwards;
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
