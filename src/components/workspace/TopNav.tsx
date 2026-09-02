@@ -58,7 +58,7 @@ export default function TopNav({ darkMode, onToggleDark, onBackToUpload }: TopNa
           <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
             <Database className="w-3.5 h-3.5 text-primary-foreground" />
           </div>
-          <span className="text-sm font-bold text-foreground hidden md:block">YUKTI</span>
+          <span className="text-sm font-bold text-foreground hidden md:block">Ganga</span>
         </button>
 
         {dataset && (

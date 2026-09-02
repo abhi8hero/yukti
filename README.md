@@ -1,6 +1,6 @@
-# ADCP To The Yukti
+# Ganga Cognitive Intelligence
 
-## Welcome to Your Miaoda Project Info
+## Automation for Data Cleaning Process
 
 ## Project Directory
 

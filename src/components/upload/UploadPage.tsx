@@ -87,13 +87,13 @@ export default function UploadPage({ onDatasetReady }: UploadPageProps) {
             <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
               <Database className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h1 className="text-xl font-semibold text-foreground">YUKTI</h1>
+            <h1 className="text-xl font-semibold text-foreground">Ganga Cognitive Intelligence</h1>
           </div>
           <h2 className="text-2xl font-bold text-foreground text-balance">
             Upload Your Dataset
           </h2>
           <p className="text-sm text-muted-foreground text-pretty max-w-lg mx-auto">
-            Drop your data file below. Yukti will automatically detect the schema, validate structure, and scan for quality issues.
+            Drop your data file below. Ganga will automatically detect the schema, validate structure, and scan for quality issues.
           </p>
         </div>
 
@@ -226,7 +226,7 @@ function DatasetPreview({
           <p className="text-xs text-warning">
             {emptyColumns > 0 && <span>{emptyColumns} empty column(s) detected. </span>}
             {nullyColumns > 0 && <span>{nullyColumns} column(s) contain missing values.</span>}
-            {' '}Yukti will scan and flag all issues automatically.
+            {' '}Ganga will scan and flag all issues automatically.
           </p>
         </div>
       )}
